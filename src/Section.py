@@ -52,12 +52,27 @@ class Section:
 
     # Defines the vertices and faces 
     def generate(self):
-        self.vertices = [ 
-                # Définir ici les sommets
+        self.vertices = [
+                [0,0,0],
+                [0,0,self.parameters['height']],
+                [self.parameters['width'],0,self.parameters['height']],
+                [self.parameters['width'],0,0],
+                [0,self.parameters['thickness'],0],
+                [0,self.parameters['thickness'],self.parameters['height']],
+                [self.parameters['width'],self.parameters['thickness'],self.parameters['height']],
+                [self.parameters['width'],self.parameters['thickness'],0]
                 ]
+        #Ici, on a défini chaques sommets 
+        
         self.faces = [
-                # définir ici les faces
+                [0,3,2,1],
+                [4,7,6,5],
+                [0,4,5,1],
+                [3,7,6,2],
+                [0,4,7,3],
+                [1,5,6,2]
                 ]   
+        #Ici, on a défini les 6 faces de notre rectangle
 
     # Checks if the opening can be created for the object x
     def canCreateOpening(self, x):
@@ -76,6 +91,19 @@ class Section:
                     
     # Draws the faces
     def draw(self):
-        # A compléter en remplaçant pass par votre code
-        pass
-  
+        
+        for face in self.faces:
+            gl.glPushMatrix()
+            gl.glTranslate(self.parameters['position'][0],self.parameters['position'][1],self.parameters['position'][2])
+            gl.glRotate(self.parameters['orientation'],0,0,1)
+            #Crée un repère propre à mon mur 
+        
+            gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_FILL)
+            gl.glBegin(gl.GL_QUADS)
+            gl.glColor3fv([0.5, 0.5, 0.5])
+            gl.glVertex3fv(self.vertices[face[0]])
+            gl.glVertex3fv(self.vertices[face[1]])
+            gl.glVertex3fv(self.vertices[face[2]])
+            gl.glVertex3fv(self.vertices[face[3]])
+            gl.glEnd()
+            gl.glPopMatrix()
