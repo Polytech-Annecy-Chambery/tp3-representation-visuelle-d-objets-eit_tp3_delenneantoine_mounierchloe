@@ -211,3 +211,4 @@ class Configuration:
             self.draw()
             pygame.event.clear()
             pygame.display.flip()
+       
